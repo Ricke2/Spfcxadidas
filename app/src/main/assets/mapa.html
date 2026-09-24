@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<script>
+
+    var map;
+    var marcadorDestino;
+    var marcadorUsuario;
+
+    // Shopping Center Norte
+    var destino = {
+        lat: -23.5163,
+        lng: -46.6168
+    };
+
+    // Inicializa o mapa
+    function initMap() {
+
+        map = new google.maps.Map(
+            document.getElementById("map"),
+            {
+                zoom: 16,
+                center: destino
+            }
+        );
+
+        // Marcador fixo do Shopping Center Norte
+        marcadorDestino = new google.maps.Marker({
+            position: destino,
+            map: map,
+            title: "Shopping Center Norte"
+        });
+
+        // Janela de informação ao clicar no marcador
+        var infoDestino = new google.maps.InfoWindow({
+            content: "<b>Shopping Center Norte</b><br>" +
+                     "Av. Otto Baumgart, 500<br>" +
+                     "São Paulo - SP<br>" +
+                     "CEP 02049-900"
+        });
+
+        marcadorDestino.addListener("click", function() {
+            infoDestino.open(map, marcadorDestino);
+        });
+    }
+
+
+    // Atualiza a localização do usuário
+    function updateLocation(lat, lng) {
+
+        var origem = {
+            lat: lat,
+            lng: lng
+        };
+
+        // Remove o marcador anterior
+        if (marcadorUsuario) {
+            marcadorUsuario.setMap(null);
+        }
+
+        // Cria o marcador azul do usuário
+        marcadorUsuario = new google.maps.Marker({
+            position: origem,
+            map: map,
+            title: "Você está aqui",
+
+            icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+    }
+
+</script>
+
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyUu6xi5JPB0s29Z6UG-JB-YoBiSmbRbc&callback=initMap"
+        async
+        defer>
+</script>
+
+</body>
+</html>
